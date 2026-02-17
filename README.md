@@ -11,4 +11,9 @@ Planned elements:
 - logging to file
 - simple alarm states
 
+Next session:
+- Make reading count configurable
+- Add interval setting
+- Add timestamp logging
+
 Project grows step by step.
