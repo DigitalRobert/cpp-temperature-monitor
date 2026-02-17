@@ -16,4 +16,5 @@ Next session:
 - Add interval setting
 - Add timestamp logging
 
+
 Project grows step by step.
