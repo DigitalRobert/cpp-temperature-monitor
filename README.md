@@ -3,7 +3,7 @@ Simulation of Industrial Temperature Monitoring.
 
 Small C++ project simulating a simple temperature measurement device.
 
-The goal is not to build a final application but to gradually design a small controller-like program and practice core C++ meachanism.
+The goal is not to build a final application but to gradually design a small controller-like program and practice core C++ mechanisms.
 
 Planned elements:
 - sensor readings 
