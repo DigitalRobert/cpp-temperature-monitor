@@ -2,6 +2,9 @@
 #include <thread>
 #include <chrono>
 #include <random>
+#include <fstream>
+#include <iomanip>
+#include <ctime>
 
 // simulate temperature sensor
 double read_temperature()
@@ -11,10 +14,22 @@ double read_temperature()
     return dist(rng);
 }
 
+std::string current_time()
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(now);
+
+    std::tm *tm_ptr = std::localtime(&t);
+
+    std::ostringstream oss;
+    oss << std::put_time(tm_ptr, "%Y-%m-%d %H:%M:%S");
+    return oss.str();
+}
+
 int main()
 {
-    int readings = 5;
-    int interval_ms = 1000;
+    int readings;
+    int interval_ms;
 
     std::cout << "Number of readings: ";
     std::cin >> readings;
@@ -22,16 +37,20 @@ int main()
     std::cout << "Interval (ms): ";
     std::cin >> interval_ms;
 
+    std::ofstream log("temperature_log.txt", std::ios::app);
+
     std::cout << "\nStarting measurements...\n\n";
 
     for(int i = 0; i < readings; ++i)
     {
         double temp = read_temperature();
-        std::cout << "Reading " << i+1 << ": " << temp << " C\n";
+        std::string time = current_time();
+
+        std::cout << time << " | " << temp << " C\n";
+        log << time << " | " << temp << " C\n";
 
         std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
     }
 
-    std::cout << "\nFinished.\n";
+    std::cout << "\nFinished. Data saved to temperature_log.txt\n";
 }
-
