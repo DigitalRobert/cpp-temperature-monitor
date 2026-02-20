@@ -14,11 +14,11 @@ double read_temperature()
     return dist(rng);
 }
 
+// get current timestamp
 std::string current_time()
 {
     auto now = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(now);
-
     std::tm *tm_ptr = std::localtime(&t);
 
     std::ostringstream oss;
@@ -30,12 +30,16 @@ int main()
 {
     int readings;
     int interval_ms;
+    double alarm_threshold = 28.0; // adjustable threshold
 
     std::cout << "Number of readings: ";
     std::cin >> readings;
 
     std::cout << "Interval (ms): ";
     std::cin >> interval_ms;
+
+    std::cout << "Alarm threshold (C): ";
+    std::cin >> alarm_threshold;
 
     std::ofstream log("temperature_log.txt", std::ios::app);
 
@@ -46,8 +50,19 @@ int main()
         double temp = read_temperature();
         std::string time = current_time();
 
-        std::cout << time << " | " << temp << " C\n";
-        log << time << " | " << temp << " C\n";
+        // Console + file output
+        std::cout << time << " | " << temp << " C";
+        log << time << " | " << temp << " C";
+
+        // Check for alarm
+        if(temp >= alarm_threshold)
+        {
+            std::cout << "  <-- WARNING: High temperature!";
+            log << "  <-- WARNING: High temperature!";
+        }
+
+        std::cout << "\n";
+        log << "\n";
 
         std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
     }
